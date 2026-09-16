@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# PyCharm / IDE
+.idea/
+.vscode/
+
+# Pytest
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.*
+
+# Resume and dataset files
+data/raw/*
+data/processed/*
+
+# Generated model files
+models/*.pkl
+models/*.joblib
+models/*.pt
+models/*.pth
+models/*.bin
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

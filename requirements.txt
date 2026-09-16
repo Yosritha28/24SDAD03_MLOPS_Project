@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+spacy
+nltk
+PyMuPDF
+python-docx
+sentence-transformers
+joblib
+matplotlib
+pytest
