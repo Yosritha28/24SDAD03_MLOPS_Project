@@ -1,0 +1,275 @@
+{
+  "info": {
+    "_postman_id": "8b51d8cf-85d7-4df3-bc12-d9dbca332155",
+    "name": "ResumeIQ API Testing",
+    "description": "Postman API test collection for ResumeIQ FastAPI backend resume analysis service.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Analyze Resume — Valid Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has all expected analysis fields\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('filename');",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "    pm.expect(jsonData).to.have.property('resume_text');",
+              "    pm.expect(jsonData).to.have.property('job_description');",
+              "    pm.expect(jsonData).to.have.property('analysis');",
+              "    pm.expect(jsonData.analysis).to.have.property('score');",
+              "    pm.expect(jsonData.analysis).to.have.property('skills');",
+              "    pm.expect(jsonData.analysis).to.have.property('strengths');",
+              "    pm.expect(jsonData.analysis).to.have.property('missing_skills');",
+              "    pm.expect(jsonData.analysis).to.have.property('advanced_analysis');",
+              "    pm.expect(jsonData.analysis.advanced_analysis).to.have.property('skill_match_score');",
+              "    pm.expect(jsonData.analysis.advanced_analysis).to.have.property('keyword_match_score');",
+              "    pm.expect(jsonData.analysis.advanced_analysis).to.have.property('experience_match_score');",
+              "    pm.expect(jsonData.analysis.advanced_analysis).to.have.property('matched_keywords');",
+              "    pm.expect(jsonData.analysis.advanced_analysis).to.have.property('resume_sections');",
+              "    pm.expect(jsonData.analysis).to.have.property('recommendations');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "resume_file",
+              "type": "file",
+              "description": "Resume file in .pdf or .docx format",
+              "src": []
+            },
+            {
+              "key": "job_description",
+              "value": "Looking for a Software Engineer with Python, React, FastAPI, SQL, and Docker experience.",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/resume/analyze",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "resume",
+            "analyze"
+          ]
+        },
+        "description": "Submits a valid resume file (.pdf or .docx) and job description to the analyzer."
+      }
+    },
+    {
+      "name": "Analyze Resume — Missing Resume",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+              "    pm.response.to.have.status(422);",
+              "});",
+              "",
+              "pm.test(\"Validation error specifies missing resume_file\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('detail');",
+              "    var found = jsonData.detail.some(function(err) {",
+              "        return err.loc && err.loc.includes('resume_file');",
+              "    });",
+              "    pm.expect(found).to.be.true;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "job_description",
+              "value": "Looking for a Python and React developer.",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/resume/analyze",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "resume",
+            "analyze"
+          ]
+        },
+        "description": "Tests validation when resume_file field is missing."
+      }
+    },
+    {
+      "name": "Analyze Resume — Missing Job Description",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+              "    pm.response.to.have.status(422);",
+              "});",
+              "",
+              "pm.test(\"Validation error specifies missing job_description\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('detail');",
+              "    var found = jsonData.detail.some(function(err) {",
+              "        return err.loc && err.loc.includes('job_description');",
+              "    });",
+              "    pm.expect(found).to.be.true;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "resume_file",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/resume/analyze",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "resume",
+            "analyze"
+          ]
+        },
+        "description": "Tests validation when job_description form field is omitted."
+      }
+    },
+    {
+      "name": "Analyze Resume — Invalid File",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400 Bad Request\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test(\"Error message specifies only PDF and DOCX supported\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.detail).to.eql(\"Only PDF and DOCX files are supported.\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "resume_file",
+              "type": "file",
+              "src": []
+            },
+            {
+              "key": "job_description",
+              "value": "Looking for a Software Engineer with Python and React.",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/resume/analyze",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "resume",
+            "analyze"
+          ]
+        },
+        "description": "Tests rejection of unsupported file types such as .txt or images."
+      }
+    },
+    {
+      "name": "Backend Root Health Check",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Message confirms backend is running\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.message).to.eql(\"ResumeIQ backend is running\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            ""
+          ]
+        },
+        "description": "Checks connectivity and health of the FastAPI server root endpoint."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ]
+}
+
