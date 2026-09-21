@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Generic modal component.
  * Props:
@@ -20,41 +18,17 @@ export default function Modal({
 }) {
   if (!isOpen) return null;
 
-  const overlayStyles = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-  };
-
-  const contentStyles = {
-    backgroundColor: '#ffffff',
-    padding: '24px',
-    borderRadius: '12px',
-    width: '90%',
-    maxWidth: '500px',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-  };
-
   return (
     <div
-      className={overlayClassName}
-      style={overlayStyles}
+      className={`riq-modal-overlay ${overlayClassName}`.trim()}
       onClick={onClose}
     >
       <div
-        className={className}
-        style={contentStyles}
+        className={`riq-modal ${className}`.trim()}
         onClick={(e) => e.stopPropagation()}
       >
-        {title && <h3>{title}</h3>}
-        {children}
+        {title && <h3 className="riq-modal-title">{title}</h3>}
+        <div className="riq-modal-body">{children}</div>
       </div>
     </div>
   );

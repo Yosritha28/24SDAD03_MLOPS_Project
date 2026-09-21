@@ -184,9 +184,9 @@ function Admin() {
   }, [backendStatus])
 
   return (
-    <div className="admin-page">
+    <div className="admin-page riq-page">
       {/* Navbar */}
-      <nav className="admin-navbar">
+      <nav className="admin-navbar riq-nav">
         <div className="logo">
           Resume<span>IQ</span>
           <span className="admin-pill">ADMIN</span>
@@ -200,13 +200,13 @@ function Admin() {
         </div>
       </nav>
 
-      <main className="admin-content">
+      <main className="admin-content riq-container">
         {/* Header */}
         <div className="admin-header">
           <div>
-            <p className="admin-tag">SYSTEM ADMINISTRATION</p>
+            <p className="riq-eyebrow">SYSTEM ADMINISTRATION</p>
             <h1>Platform Operations & Monitoring</h1>
-            <p>
+            <p className="riq-subtitle">
               Inspect backend service health, AI model status, deployment parameters, and platform traffic.
             </p>
           </div>

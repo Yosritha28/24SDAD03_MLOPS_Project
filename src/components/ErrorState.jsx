@@ -1,4 +1,3 @@
-import React from 'react';
 /**
  * ErrorState component – displays an error message with optional retry action.
  * Props:
@@ -16,7 +15,7 @@ export default function ErrorState({
   className = ''
 }) {
   return (
-    <div className={`error-state ${className}`.trim()}>
+    <div className={`riq-state error-state ${className}`.trim()}>
       <h3>{title}</h3>
       {message && <p>{message}</p>}
       {onRetry && (

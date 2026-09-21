@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import Card from '../components/Card';
-import StatusBadge from '../components/StatusBadge';
 import LoadingState from '../components/LoadingState';
 import EmptyState from '../components/EmptyState';
 import ErrorState from '../components/ErrorState';
 import Modal from '../components/Modal';
+import StatusBadge from '../components/StatusBadge';
 
 // Frontend persistence layer for candidate application tracking (Step 2).
 // Single storage key for all applications.
@@ -175,7 +174,8 @@ export default function Applications() {
   // Loading state
   if (loading) {
     return (
-      <div className="applications-page">
+      <div className="applications-page riq-page riq-narrow">
+        <p className="riq-eyebrow">CANDIDATE TRACKING</p>
         <h2>My Applications</h2>
         <LoadingState message="Loading applications..." />
       </div>
@@ -185,7 +185,8 @@ export default function Applications() {
   // Error state
   if (error) {
     return (
-      <div className="applications-page">
+      <div className="applications-page riq-page riq-narrow">
+        <p className="riq-eyebrow">CANDIDATE TRACKING</p>
         <h2>My Applications</h2>
 
         <ErrorState
@@ -201,7 +202,8 @@ export default function Applications() {
   // Empty state
   if (filtered.length === 0) {
     return (
-      <div className="applications-page">
+      <div className="applications-page riq-page riq-narrow">
+        <p className="riq-eyebrow">CANDIDATE TRACKING</p>
         <h2>My Applications</h2>
 
         <EmptyState
@@ -214,76 +216,62 @@ export default function Applications() {
   }
 
   return (
-    <Card className="applications-page">
-      <h2>My Applications</h2>
+    <div className="applications-page riq-page">
+      <div className="riq-container">
+        <p className="riq-eyebrow">CANDIDATE TRACKING</p>
+        <h2>My Applications</h2>
+        <p className="riq-subtitle">
+          Every analyzed resume is saved here automatically.
+        </p>
 
-      {/* Filter buttons */}
-      <div
-        className="filter-toolbar"
-        style={{ marginBottom: '16px' }}
-      >
-        {statusOptions.map((opt) => (
-          <Button
-            key={opt}
-            className={`filter-btn ${filter === opt ? 'active' : ''}`}
-            onClick={() => setFilter(opt)}
-          >
-            {opt}
-          </Button>
-        ))}
-      </div>
+        {/* Filter buttons */}
+        <div
+          className="filter-toolbar riq-filters"
+        >
+          {statusOptions.map((opt) => (
+            <Button
+              key={opt}
+              className={`filter-btn ${filter === opt ? 'active' : ''}`}
+              onClick={() => setFilter(opt)}
+            >
+              {opt}
+            </Button>
+          ))}
+        </div>
 
-      {/* Application list */}
-      <div className="table-responsive-container">
-        <table className="candidate-table">
-          <thead className="table-header">
-            <tr>
-              <th>Job / Role</th>
-              <th>Company</th>
-              <th>Date</th>
-              <th>Match Score</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        {/* Application cards */}
+        <div className="applications-card-list">
+          {filtered.map((app) => (
+            <article key={app.id} className="application-card">
+              <div className="application-main">
+                <h3>{app.jobRole}</h3>
+                <p className="application-company">{app.company ?? '—'}</p>
+                <p className="application-meta">
+                  <StatusBadge status={app.status} />{' '}
+                  <span>
+                    {app.date
+                      ? new Date(app.date).toLocaleDateString()
+                      : '—'}
+                  </span>
+                </p>
+              </div>
 
-          <tbody>
-            {filtered.map((app) => (
-              <tr
-                key={app.id}
-                style={{ borderBottom: '1px solid #e5e7eb' }}
-              >
-                <td>{app.jobRole}</td>
-
-                <td>{app.company ?? '—'}</td>
-
-                <td>
-                  {new Date(app.date).toLocaleDateString()}
-                </td>
-
-                <td>
-                  {app.matchScore !== null
-                    ? `${app.matchScore}%`
-                    : '—'}
-                </td>
-
-                <td>
-                  <StatusBadge status={app.status} />
-                </td>
-
-                <td>
-                  <Button
-                    className="view-details-btn"
-                    onClick={() => setSelected(app)}
-                  >
-                    View Details
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <div className="application-side">
+                <strong className="application-score">
+                  {app.matchScore !== null && app.matchScore !== undefined
+                    ? `${app.matchScore}% MATCH`
+                    : 'NO SCORE'}
+                </strong>
+                <Button
+                  className="view-details-btn"
+                  onClick={() => setSelected(app)}
+                >
+                  View Details
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
 
       {/* Details modal */}
       {selected && (
@@ -296,14 +284,16 @@ export default function Applications() {
         >
             <p>
               <strong>Date Applied:</strong>{' '}
-              {new Date(selected.date).toLocaleDateString()}
+              {selected.date
+                ? new Date(selected.date).toLocaleDateString()
+                : '—'}
             </p>
 
             <p>
               <strong>Status:</strong> {selected.status}
             </p>
 
-            {selected.matchScore !== null && (
+            {selected.matchScore !== null && selected.matchScore !== undefined && (
               <p>
                 <strong>Match Score:</strong>{' '}
                 {selected.matchScore}%
@@ -334,6 +324,7 @@ export default function Applications() {
             </div>
         </Modal>
       )}
-    </Card>
+      </div>
+    </div>
   );
 }

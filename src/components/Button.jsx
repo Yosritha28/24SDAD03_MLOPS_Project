@@ -1,7 +1,5 @@
-import React from 'react';
-
 /**
- * Reusable button component preserving existing UI classes.
+ * Reusable button component using the shared ResumeIQ dark UI tokens.
  * Props:
  * - children: button label/content
  * - onClick: click handler
@@ -18,7 +16,7 @@ export default function Button({
   className = '',
   variant = ''
 }) {
-  const classes = `${className} ${variant}`.trim();
+  const classes = `riq-btn ${className} ${variant}`.trim();
   return (
     <button
       type={type}

@@ -16,9 +16,7 @@ import {
 
 // Reusable UI components
 import Button from '../components/Button'
-import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
-import Modal from '../components/Modal'
 import LoadingState from '../components/LoadingState'
 import EmptyState from '../components/EmptyState'
 import ErrorState from '../components/ErrorState'
@@ -280,7 +278,7 @@ function Recruiter() {
   }
 
   return (
-        <Card className="recruiter-page">
+    <div className="recruiter-page riq-page">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="recruiter-toast">
@@ -289,7 +287,7 @@ function Recruiter() {
       )}
 
       {/* Navbar */}
-      <nav className="recruiter-navbar">
+      <nav className="recruiter-navbar riq-nav">
         <div className="logo">
           Resume<span>IQ</span>
         </div>
@@ -302,13 +300,13 @@ function Recruiter() {
         </div>
       </nav>
 
-      <main className="recruiter-content">
+      <main className="recruiter-content riq-container">
         {/* Header */}
         <div className="recruiter-header">
           <div>
-            <p className="recruiter-tag">RECRUITER PORTAL</p>
+            <p className="riq-eyebrow">RECRUITER PORTAL</p>
             <h1>Find the right talent faster.</h1>
-            <p>
+            <p className="riq-subtitle">
               Review candidate profiles, compare job compatibility,
               and identify the strongest candidates with ResumeIQ.
             </p>
@@ -830,7 +828,7 @@ function Recruiter() {
           </div>
         )}
       </main>
-    </Card>
+    </div>
   )
 }
 

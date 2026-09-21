@@ -1,4 +1,3 @@
-import React from 'react';
 /**
  * EmptyState component – shows a friendly message when no data is available.
  * Props:
@@ -16,7 +15,7 @@ export default function EmptyState({
   className = ''
 }) {
   return (
-    <div className={`empty-state ${className}`.trim()}>
+    <div className={`riq-state empty-state ${className}`.trim()}>
       <h3>{title}</h3>
       {description && <p>{description}</p>}
       {actionLabel && onAction && (

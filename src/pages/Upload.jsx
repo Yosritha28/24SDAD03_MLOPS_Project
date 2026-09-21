@@ -67,7 +67,6 @@ function Upload() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
-
   const handleFileChange = (event) => {
     setFile(event.target.files[0])
     setResult(null)
@@ -122,18 +121,18 @@ function Upload() {
   }
 
   return (
-    <div className="upload-page">
+    <div className="upload-page riq-page">
 
-      <div className="upload-container">
+      <div className="upload-container riq-container">
 
+        <p className="riq-eyebrow">ANALYSIS WORKSPACE</p>
         <h1>Analyze Your Resume</h1>
 
-        <p>
-          Upload your resume and provide a job description
-          to get your personalized analysis.
+        <p className="riq-subtitle">
+          Upload your resume and compare it with a job description.
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="riq-panel upload-grid">
 
           <div className="upload-box">
             <h2>Upload Resume</h2>
@@ -168,7 +167,7 @@ function Upload() {
 
           <button
             type="submit"
-            className="analyze-btn"
+            className="analyze-btn riq-primary-btn"
             disabled={loading}
           >
             {loading ? 'Analyzing...' : 'Analyze Resume'}
@@ -176,8 +175,16 @@ function Upload() {
 
         </form>
 
+        {loading && (
+          <div className="riq-state riq-loading-block">
+            <div className="spinner" />
+            <h3>Analyzing your resume…</h3>
+            <p>Parsing your document and scoring it against the job description.</p>
+          </div>
+        )}
+
         {error && (
-          <div className="error-message">
+          <div className="error-message riq-error-block">
             <h3>Analysis Failed</h3>
             <p>{error}</p>
           </div>

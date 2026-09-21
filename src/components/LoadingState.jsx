@@ -1,4 +1,3 @@
-import React from 'react';
 /**
  * LoadingState component to display a loading indicator.
  * Props:
@@ -7,7 +6,7 @@ import React from 'react';
  */
 export default function LoadingState({ message = 'Loading...', className = '' }) {
   return (
-    <div className={`loading-state ${className}`.trim()}>
+    <div className={`riq-state loading-state ${className}`.trim()}>
       {/* Reuse any existing spinner style if present */}
       <div className="spinner" />
       <h3>{message}</h3>

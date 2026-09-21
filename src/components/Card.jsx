@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Generic Card component.
  * Props:
@@ -9,7 +7,7 @@ import React from 'react';
  */
 export default function Card({ children, className = '', title }) {
   return (
-    <div className={`card ${className}`.trim()}>
+    <div className={`riq-card card ${className}`.trim()}>
       {title && <h3 className="card-title">{title}</h3>}
       {children}
     </div>

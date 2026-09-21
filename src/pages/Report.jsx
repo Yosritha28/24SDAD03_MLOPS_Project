@@ -76,13 +76,15 @@ function Report() {
         <section className="report-score-section">
 
           <div className="report-score">
-            <strong>
-              {analysis.score}%
-            </strong>
+            <div className="report-score-ring">
+              <strong>
+                {analysis.score}%
+              </strong>
 
-            <span>
-              Overall Match
-            </span>
+              <span>
+                Overall Match
+              </span>
+            </div>
           </div>
 
           <div className="report-summary">
@@ -112,6 +114,7 @@ function Report() {
               <strong>
                 {advanced.skill_match_score ?? 0}%
               </strong>
+              <p>Skills aligned with the job requirements.</p>
             </div>
 
             <div className="report-metric-card">
@@ -119,6 +122,7 @@ function Report() {
               <strong>
                 {advanced.keyword_match_score ?? 0}%
               </strong>
+              <p>Important job keywords found in the resume.</p>
             </div>
 
             <div className="report-metric-card">
@@ -126,6 +130,7 @@ function Report() {
               <strong>
                 {advanced.experience_match_score ?? 0}%
               </strong>
+              <p>Experience alignment with the role.</p>
             </div>
 
           </div>
@@ -144,13 +149,13 @@ function Report() {
               <h3>Matched Skills</h3>
 
               {analysis.skills?.length > 0 ? (
-                <ul>
+                <div className="skill-pill-list">
                   {analysis.skills.map((skill) => (
-                    <li key={skill}>
+                    <span key={skill} className="skill-pill matched">
                       ✓ {skill}
-                    </li>
+                    </span>
                   ))}
-                </ul>
+                </div>
               ) : (
                 <p>No matching skills found.</p>
               )}
@@ -162,13 +167,13 @@ function Report() {
               <h3>Missing Skills</h3>
 
               {analysis.missing_skills?.length > 0 ? (
-                <ul>
+                <div className="skill-pill-list">
                   {analysis.missing_skills.map((skill) => (
-                    <li key={skill}>
+                    <span key={skill} className="skill-pill missing">
                       ⚠ {skill}
-                    </li>
+                    </span>
                   ))}
-                </ul>
+                </div>
               ) : (
                 <p>
                   No major missing skills found.
@@ -186,13 +191,14 @@ function Report() {
 
           <h2>Candidate Strengths</h2>
 
-          <div className="report-list-card">
+          <div className="report-list-card strengths-card">
 
             {analysis.strengths?.length > 0 ? (
-              <ul>
+              <ul className="strengths-list">
                 {analysis.strengths.map((strength) => (
                   <li key={strength}>
-                    ✓ {strength}
+                    <span className="strength-check">✓</span>
+                    <span>{strength}</span>
                   </li>
                 ))}
               </ul>
@@ -254,14 +260,17 @@ function Report() {
                 key={section}
               >
 
-                <span>
+                <span className="section-status-icon">
                   {present ? '✓' : '⚠'}
                 </span>
 
-                <strong>
-                  {section.charAt(0).toUpperCase() +
-                    section.slice(1)}
-                </strong>
+                <div className="section-status-text">
+                  <strong>
+                    {section.charAt(0).toUpperCase() +
+                      section.slice(1)}
+                  </strong>
+                  <small>{present ? 'Present' : 'Missing'}</small>
+                </div>
 
               </div>
 
@@ -280,13 +289,16 @@ function Report() {
 
             {analysis.recommendations?.length > 0 ? (
 
-              <ol>
+              <ol className="recommendations-list">
 
                 {analysis.recommendations.map(
                   (recommendation, index) => (
 
-                    <li key={index}>
-                      {recommendation}
+                    <li key={index} className="recommendation-item">
+                      <span className="recommendation-number">
+                        {index + 1}
+                      </span>
+                      <span>{recommendation}</span>
                     </li>
 
                   )

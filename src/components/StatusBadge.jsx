@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * StatusBadge component to display status text with appropriate styling.
  * Props:
