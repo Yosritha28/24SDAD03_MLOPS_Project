@@ -5,6 +5,8 @@ import './App.css'
 import Upload from './pages/Upload'
 import Recruiter from './pages/Recruiter'
 import Report from './pages/Report'
+import Admin from './pages/Admin'
+import Applications from './pages/Applications'
 
 function Home() {
   return (
@@ -20,10 +22,13 @@ function Home() {
           <a href="#home">Home</a>
           <a href="#features">Features</a>
           <a href="#about">About</a>
+          <Link to="/recruiter">Recruiter</Link>
+          <Link to="/admin">Admin</Link>
 
           <Link to="/upload" className="login-btn">
             Login
           </Link>
+          <Link to="/applications" className="login-btn">My Applications</Link>
         </div>
       </nav>
 
@@ -125,6 +130,9 @@ function App() {
 
         <Route path="/report" element={<Report />} />
 
+        <Route path="/admin" element={<Admin />} />
+
+      <Route path="/applications" element={<Applications />} />
       </Routes>
     </BrowserRouter>
   )

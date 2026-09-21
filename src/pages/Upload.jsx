@@ -1,6 +1,65 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+const APPLICATIONS_STORAGE_KEY = 'resumeiq_applications'
+
+// Append one analyzed resume as an application without overwriting existing ones.
+// Called exactly once per successful analysis response (never during render/effects).
+function appendAnalysisToApplications(score) {
+  try {
+    const raw = localStorage.getItem(APPLICATIONS_STORAGE_KEY)
+    let existing = []
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (Array.isArray(parsed)) {
+        existing = parsed
+      }
+    }
+    const now = new Date()
+    const newApplication = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      jobRole: 'Resume Analysis',
+      company: 'ResumeIQ',
+      date: now.toISOString().slice(0, 10),
+      matchScore: score,
+      status: 'Applied',
+      details: {
+        description: 'Resume analyzed against the provided job description.',
+        notes: 'Created from ResumeIQ candidate analysis.',
+      },
+    }
+    existing.push(newApplication)
+    try {
+      localStorage.setItem(APPLICATIONS_STORAGE_KEY, JSON.stringify(existing))
+    } catch {
+      // Storage unavailable/quota: analysis result is still displayed.
+    }
+  } catch {
+    // Invalid stored JSON or storage unavailable: do not break the analysis flow.
+    try {
+      const now = new Date()
+      const fallbackApplication = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        jobRole: 'Resume Analysis',
+        company: 'ResumeIQ',
+        date: now.toISOString().slice(0, 10),
+        matchScore: score,
+        status: 'Applied',
+        details: {
+          description: 'Resume analyzed against the provided job description.',
+          notes: 'Created from ResumeIQ candidate analysis.',
+        },
+      }
+      localStorage.setItem(
+        APPLICATIONS_STORAGE_KEY,
+        JSON.stringify([fallbackApplication])
+      )
+    } catch {
+      // Ignore: analysis result is already shown.
+    }
+  }
+}
+
 function Upload() {
   const navigate = useNavigate()
   const [file, setFile] = useState(null)
@@ -53,6 +112,7 @@ function Upload() {
       }
 
       setResult(data)
+      appendAnalysisToApplications(data?.analysis?.score ?? null)
     } catch (error) {
       console.error('Analysis error:', error)
       setError(error.message)
