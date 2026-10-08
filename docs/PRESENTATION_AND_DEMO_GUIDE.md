@@ -286,3 +286,4 @@
 | **16** | View Mobile Results | Result screen opens showing scores, pills, recommendations | *"The mobile screen renders the identical score breakdown and skill gap tags."* |
 | **17** | Verify Same Backend | Tap **Settings** tab and tap **Test Connection** | *"In Settings, our live health check confirms the app communicates with the same server."* |
 | **18** | Conclude Demo | Return to presentation / summary | *"This completes our demonstration of the ResumeIQ web and mobile ecosystem. Thank you!"* |
+

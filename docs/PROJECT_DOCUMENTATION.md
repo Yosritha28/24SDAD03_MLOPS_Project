@@ -394,3 +394,4 @@ In accordance with actual project implementation:
 
 ## 25. Conclusion
 ResumeIQ successfully demonstrates a modern, end-to-end AI career intelligence solution. By integrating a responsive React web portal, a lightweight React Native mobile app, and a robust FastAPI NLP backend, the system bridges the gap between candidates and recruiters with objective, automated, and instant resume evaluations.
+
