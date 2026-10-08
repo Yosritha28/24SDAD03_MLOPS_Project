@@ -5,11 +5,13 @@ from google import genai
 load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
+client = None
 
-if not api_key:
-    raise RuntimeError("GEMINI_API_KEY is not configured")
-
-client = genai.Client(api_key=api_key)
+if api_key:
+    try:
+        client = genai.Client(api_key=api_key)
+    except Exception as exc:  # pragma: no cover - runtime environment protection
+        print(f"Gemini client initialization failed: {exc}")
 
 
 def generate_recommendations(
@@ -18,6 +20,9 @@ def generate_recommendations(
     matched_skills: list,
     missing_skills: list,
 ):
+    if not client:
+        return ["AI recommendations are temporarily unavailable."]
+
     prompt = f"""
 You are an expert resume and career advisor.
 
@@ -48,25 +53,28 @@ Return ONLY the recommendations as a numbered list.
 Do not include an introduction or conclusion.
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
 
-    text = response.text.strip()
+        text = response.text.strip()
 
-    recommendations = []
+        recommendations = []
 
-    for line in text.splitlines():
-        line = line.strip()
+        for line in text.splitlines():
+            line = line.strip()
 
-        if not line:
-            continue
+            if not line:
+                continue
 
-        # Remove numbering such as "1." or "1)"
-        cleaned = line.lstrip("0123456789").lstrip(".").lstrip(")").strip()
+            cleaned = line.lstrip("0123456789").lstrip(".").lstrip(")").strip()
 
-        if cleaned:
-            recommendations.append(cleaned)
+            if cleaned:
+                recommendations.append(cleaned)
 
-    return recommendations[:5]
+        return recommendations[:5]
+    except Exception as exc:  # pragma: no cover - runtime environment protection
+        print(f"Gemini recommendation generation failed: {exc}")
+        return ["AI recommendations are temporarily unavailable."]
